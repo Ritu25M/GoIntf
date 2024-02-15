@@ -1,3 +1,3 @@
-module testProject3
+module goIntf
 
 go 1.20

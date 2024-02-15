@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"testProject3/species"
+	"goIntf/species"
 )
 
 func main() {
