@@ -1,35 +1,42 @@
 package tag
 
+import "time"
+
 // notice that package species is not imported here
 
-type tagStruct struct {
+// Tagger handles the tag-related methods.
+type tagger struct {
 	speciesManager infSpecies
 }
 
+// SpeciesHandler defines the interface for species-related used by tagger.
 type infSpecies interface {
 	GetCategory(string) string
 }
 
-var categorytagmap = map[string]tagtype{
+// catToTagMap maps species categories to their respective tag types.
+var catToTagMap = map[string]tagtype{
 	"herbivore": "HR",
 	"carnivore": "CR",
 	"omnivore":  "OR",
+	"unknown":   "U",
 }
 
 type tagtype string
 
-// InitStructB initializes structB with an instance of interfaceA and returns structB.
-// serves as a function called by FunctionA1 from packageA.
-func InitTagger(iSpecies infSpecies) tagStruct {
-	return tagStruct{iSpecies}
+// InitTagger initializes tagger struct with an instance of speciesManager and returns tagger.
+func InitTagger(iSpecies infSpecies) tagger {
+	return tagger{iSpecies}
 }
 
-// CreateTagPrefix is a method on StructB that calls GetCategory without using the "species" package directly..
-func (s tagStruct) CreateTagPrefix(species string) tagtype {
-	if tag, ok := categorytagmap[s.speciesManager.GetCategory(species)]; ok {
-		return tag
+// CreateTagPrefix is a method on Tagger that calls GetCategory without using the "species" package directly.
+func (t tagger) CreateTagPrefix(species string) tagtype {
+	// Retrieve category of the species and map it to the corresponding tag type
+	cat := t.speciesManager.GetCategory(species)
+	if tag, ok := catToTagMap[cat]; ok {
+		return tag + time.DateTime
 	} else {
-		return "Unknown"
+		return "CatNotSupported"
 	}
 	// import cycle will not arise here.
 }
